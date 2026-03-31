@@ -1,0 +1,28 @@
+name: hosted-agent-readiness-coach
+displayName: "Hosted Agent Readiness Coach"
+description: >
+  A starter code-based hosted agent that helps teams choose implementation shape,
+  prepare a pilot checklist, and troubleshoot common Microsoft Foundry Hosted Agent setup issues.
+metadata:
+  authors:
+    - Workshop Lab
+  tags:
+    - Microsoft Foundry
+    - Hosted Agents
+    - Agent Framework
+    - Readiness
+template:
+  name: hosted-agent-readiness-coach
+  kind: hosted
+  protocols:
+    - protocol: responses
+      version: v1
+  environment_variables:
+    - name: AZURE_AI_PROJECT_ENDPOINT
+      value: ${AZURE_AI_PROJECT_ENDPOINT}
+    - name: MODEL_DEPLOYMENT_NAME
+      value: "{{chat}}"
+resources:
+  - kind: model
+    id: gpt-4.1-mini
+    name: chat

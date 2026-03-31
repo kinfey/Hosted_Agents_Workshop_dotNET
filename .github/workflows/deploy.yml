@@ -1,0 +1,100 @@
+name: Publish Hosted Agent Image To ACR
+
+on:
+  workflow_dispatch:
+    inputs:
+      acrName:
+        description: Azure Container Registry name. Leave blank to use the AZURE_CONTAINER_REGISTRY_NAME repository variable.
+        required: false
+        type: string
+      imageRepository:
+        description: Repository name to push inside ACR.
+        required: false
+        default: workshoplab-agent
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/deploy.yml
+      - src/WorkshopLab.AgentHost/**
+      - azure.yaml
+      - infra/**
+
+concurrency:
+  group: deploy-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      id-token: write
+      contents: read
+
+    env:
+      ACR_NAME: ${{ inputs.acrName != '' && inputs.acrName || vars.AZURE_CONTAINER_REGISTRY_NAME }}
+      IMAGE_REPOSITORY: ${{ inputs.imageRepository != '' && inputs.imageRepository || 'workshoplab-agent' }}
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore WorkshopLab.sln
+
+      - name: Build
+        run: dotnet build WorkshopLab.sln --no-restore
+
+      - name: Test
+        run: dotnet test WorkshopLab.sln --no-build --verbosity normal
+
+      - name: Validate ACR configuration
+        shell: bash
+        run: |
+          if [ -z "$ACR_NAME" ]; then
+            echo "AZURE_CONTAINER_REGISTRY_NAME is not configured." >&2
+            echo "Set it as a workflow input or repository variable." >&2
+            exit 1
+          fi
+
+      - name: Azure login
+        uses: azure/login@1384c340ab2dda50fed2bee3041d1d87018aa5e8 # v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Compute image tag
+        id: image
+        shell: bash
+        run: |
+          timestamp=$(date -u +'%Y%m%d%H%M%S')
+          short_sha=${GITHUB_SHA::7}
+          echo "tag=${timestamp}-${short_sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish linux amd64 image with ACR build
+        shell: bash
+        run: |
+          az acr build \
+            --registry "$ACR_NAME" \
+            --image "$IMAGE_REPOSITORY:${{ steps.image.outputs.tag }}" \
+            --platform linux/amd64 \
+            --source-acr-auth-id "[caller]" \
+            --file src/WorkshopLab.AgentHost/Dockerfile \
+            ./src/WorkshopLab.AgentHost
+
+      - name: Summarize published image
+        shell: bash
+        run: |
+          login_server=$(az acr show --name "$ACR_NAME" --query loginServer -o tsv)
+          {
+            echo "## Hosted Agent Image Published"
+            echo
+            echo "- Registry: $ACR_NAME"
+            echo "- Image: $login_server/$IMAGE_REPOSITORY:${{ steps.image.outputs.tag }}"
+            echo "- Next step: run scripts/deploy-foundry-agent.ps1 to create or update the Foundry hosted agent manifest."
+          } >> "$GITHUB_STEP_SUMMARY"

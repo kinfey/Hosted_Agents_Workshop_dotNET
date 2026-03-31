@@ -1,0 +1,20 @@
+{
+  "name": "workshop_lab",
+  "version": "1.0.0",
+  "description": "This repository is a beginner-friendly workshop for building a Microsoft Foundry Hosted Agent with .NET 10.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "capture:screenshots": "powershell -ExecutionPolicy Bypass -File ./scripts/capture-ui-chrome.ps1",
+    "capture:screenshots:chrome": "powershell -ExecutionPolicy Bypass -File ./scripts/capture-ui-chrome.ps1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "playwright": "^1.58.2"
+  }
+}

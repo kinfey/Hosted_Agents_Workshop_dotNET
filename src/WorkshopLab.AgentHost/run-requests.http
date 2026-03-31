@@ -1,0 +1,107 @@
+# -------------------------------------------------------
+# Local development requests (agent running on localhost)
+# -------------------------------------------------------
+
+POST http://localhost:8088/responses
+Content-Type: application/json
+
+{
+  "input": "We need an agent for onboarding teams to Microsoft Foundry Hosted Agents. It needs private API access and a repeatable launch checklist. Should we use a hosted agent?",
+  "stream": false
+}
+
+###
+
+POST http://localhost:8088/responses
+Content-Type: application/json
+
+{
+  "input": "Create a launch checklist for an agent named triage-coach in the pilot environment.",
+  "stream": false
+}
+
+###
+
+POST http://localhost:8088/responses
+Content-Type: application/json
+
+{
+  "input": "Our container starts, but requests to /responses fail. How should we troubleshoot that?",
+  "stream": false
+}
+
+###
+
+# -------------------------------------------------------
+# Production requests via Foundry Agent Service
+# Uses the OpenAI Responses API with agent_reference
+#
+# Before sending:
+#   1. Set @projectEndpoint to your Foundry project endpoint (see below)
+#   2. Get a token: az account get-access-token --resource "https://ai.azure.com" --query accessToken -o tsv
+#   3. Set @token to the value returned by the command above
+# -------------------------------------------------------
+
+# Replace with your project endpoint: azd env get-values | Select-String AZURE_AI_PROJECT_ENDPOINT
+@projectEndpoint = https://<account>.services.ai.azure.com/api/projects/<project>
+@agentName = hosted-agent-readiness-coach
+# Paste the token from: az account get-access-token --resource "https://ai.azure.com" --query accessToken -o tsv
+@token = <paste-bearer-token-here>
+
+POST {{projectEndpoint}}/openai/v1/responses
+Content-Type: application/json
+Authorization: Bearer {{token}}
+api-version: 2025-01-01-preview
+
+{
+  "input": [
+    {
+      "role": "user",
+      "content": "We are onboarding a team to Microsoft Foundry hosted agents. We need private API access, a repeatable deployment process, and a launch checklist for production readiness. Should we use a hosted agent for this scenario, and what implementation shape do you recommend?"
+    }
+  ],
+  "agent_reference": {
+    "name": "{{agentName}}",
+    "type": "agent_reference"
+  }
+}
+
+###
+
+POST {{projectEndpoint}}/openai/v1/responses
+Content-Type: application/json
+Authorization: Bearer {{token}}
+api-version: 2025-01-01-preview
+
+{
+  "input": [
+    {
+      "role": "user",
+      "content": "Create a launch checklist for an agent named triage-coach in the pilot environment."
+    }
+  ],
+  "agent_reference": {
+    "name": "{{agentName}}",
+    "type": "agent_reference"
+  }
+}
+
+###
+
+POST {{projectEndpoint}}/openai/v1/responses
+Content-Type: application/json
+Authorization: Bearer {{token}}
+api-version: 2025-01-01-preview
+
+{
+  "input": [
+    {
+      "role": "user",
+      "content": "Our container starts, but requests to /responses fail. How should we troubleshoot that?"
+    }
+  ],
+  "agent_reference": {
+    "name": "{{agentName}}",
+    "type": "agent_reference"
+  }
+}

@@ -1,0 +1,7 @@
+name: workshoplab
+metadata:
+  template: workshoplab-foundry-hosted-agent
+infra:
+  provider: bicep
+pipeline:
+  provider: github
