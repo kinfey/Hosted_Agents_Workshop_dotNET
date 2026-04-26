@@ -32,14 +32,16 @@ This .NET workshop variant uses the GitHub Copilot SDK through a Copilot CLI exe
 
 ## Deployment Files
 
-The GitHub Copilot deployment files are now under `src/GitHubCopilot`:
+The GitHub Copilot deployment files are split between the app source and an isolated manifest directory:
 
 ```text
+hosted_agent/manifests/GitHubCopilot/
+└── agent.manifest.yaml
+
 src/GitHubCopilot/
 ├── Dockerfile
 ├── .dockerignore
 ├── .env.example
-├── agent.manifest.yaml
 ├── agent.yaml
 ├── WorkshopLab.GitHubCopilot.AppHost/
 ├── WorkshopLab.GitHubCopilot.AGUI/
@@ -47,7 +49,7 @@ src/GitHubCopilot/
 └── WorkshopLab.GitHubCopilot.FoundryDeployment/
 ```
 
-Use `agent.manifest.yaml` with `azd ai agent init`. Use `agent.yaml` with the repository's .NET deployment helper after you have a container image URI.
+Keep `hosted_agent/manifests/GitHubCopilot` separate from the generated agent project. `azd ai agent init` fails when the generated target is inside the manifest directory. Use `src/GitHubCopilot/agent.yaml` with the repository's .NET deployment helper after you have a container image URI.
 
 ## Local Validation
 
@@ -85,11 +87,12 @@ Expected result: the client accepts prompts and streams responses from the GitHu
 
 The .NET hosted-agent samples use `azd ai agent init -m <manifest>` to generate deployment scaffolding from the manifest, then deploy with `azd up` or `azd deploy`.
 
-From the repository root:
+From the repository root, create or reuse an output directory that is not inside the manifest directory:
 
 ```bash
-cd src/GitHubCopilot
-azd ai agent init -m agent.manifest.yaml
+mkdir -p hosted_agent/GitHubCopilot
+cd hosted_agent/GitHubCopilot
+azd ai agent init -m ../manifests/GitHubCopilot/agent.manifest.yaml
 ```
 
 Set the values used by the hosted AppHost:
