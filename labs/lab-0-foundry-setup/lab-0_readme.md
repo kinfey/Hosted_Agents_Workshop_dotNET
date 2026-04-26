@@ -53,7 +53,7 @@
 6. Run the hosted agent:
 
    ```powershell
-   dotnet run --project src/WorkshopLab.AgentHost
+   dotnet run --project src/Foundry/WorkshopLab.AgentHost
    ```
 
    > **Checkpoint:** You should see `Now listening on: http://localhost:8088` in the terminal output.

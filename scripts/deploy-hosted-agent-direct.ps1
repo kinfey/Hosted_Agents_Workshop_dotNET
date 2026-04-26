@@ -42,7 +42,7 @@ Write-Host ""
 # Call the deployment helper with the agent definition
 $args = @(
     "run",
-    "--project", "src/WorkshopLab.FoundryDeployment/WorkshopLab.FoundryDeployment.csproj",
+    "--project", "src/Foundry/WorkshopLab.FoundryDeployment/WorkshopLab.FoundryDeployment.csproj",
     "--",
     "--project-endpoint", $ProjectEndpoint,
     "--agent-name", $AgentName,

@@ -16,10 +16,10 @@
 
    ```yaml
    - name: Build hosted agent container
-     run: docker build --platform linux/amd64 -t workshoplab-agent -f ./src/WorkshopLab.AgentHost/Dockerfile ./src
+   run: docker build --platform linux/amd64 -t workshoplab-agent -f ./src/Foundry/WorkshopLab.AgentHost/Dockerfile ./src/Foundry
    ```
 
-   > **Important:** The build context must be `./src` (not `./src/WorkshopLab.AgentHost`) because the Dockerfile copies both `WorkshopLab.Core` and `WorkshopLab.AgentHost`. The `--file` flag points to the Dockerfile explicitly.
+   > **Important:** The build context must be `./src/Foundry` (not `./src/Foundry/WorkshopLab.AgentHost`) because the Dockerfile copies both `WorkshopLab.Core` and `WorkshopLab.AgentHost`. The `--file` flag points to the Dockerfile explicitly.
 
 4. Ensure the workflow triggers on:
    - `workflow_dispatch`

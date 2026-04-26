@@ -37,4 +37,4 @@ jobs:
         run: dotnet test WorkshopLab.sln --no-build --verbosity normal
 
       - name: Build hosted agent container
-        run: docker build --platform linux/amd64 -t workshoplab-agent -f ./src/WorkshopLab.AgentHost/Dockerfile ./src
+        run: docker build --platform linux/amd64 -t workshoplab-agent -f ./src/Foundry/WorkshopLab.AgentHost/Dockerfile ./src/Foundry

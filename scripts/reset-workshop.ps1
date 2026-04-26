@@ -71,7 +71,10 @@ $envVars = @(
     "MODEL_DEPLOYMENT_NAME",
     "AZURE_CONTAINER_REGISTRY_NAME",
     "AZURE_CONTAINER_REGISTRY_ENDPOINT",
-    "FOUNDRY_AGENT_ID"
+    "FOUNDRY_AGENT_ID",
+    "GITHUB_COPILOT_MODEL",
+    "COPILOT_CLI_PATH",
+    "AGUI_SERVER_URL"
 )
 
 foreach ($var in $envVars) {
@@ -88,14 +91,22 @@ Write-Host ""
 Write-Host "Removing local build artifacts..." -ForegroundColor Yellow
 
 $artifactDirs = @(
-    "src/WorkshopLab.AgentHost/bin",
-    "src/WorkshopLab.AgentHost/obj",
-    "src/WorkshopLab.Core/bin",
-    "src/WorkshopLab.Core/obj",
-    "src/WorkshopLab.ChatUI/bin",
-    "src/WorkshopLab.ChatUI/obj",
-    "src/WorkshopLab.FoundryDeployment/bin",
-    "src/WorkshopLab.FoundryDeployment/obj",
+    "src/Foundry/WorkshopLab.AgentHost/bin",
+    "src/Foundry/WorkshopLab.AgentHost/obj",
+    "src/Foundry/WorkshopLab.Core/bin",
+    "src/Foundry/WorkshopLab.Core/obj",
+    "src/Foundry/WorkshopLab.ChatUI/bin",
+    "src/Foundry/WorkshopLab.ChatUI/obj",
+    "src/Foundry/WorkshopLab.FoundryDeployment/bin",
+    "src/Foundry/WorkshopLab.FoundryDeployment/obj",
+    "src/GitHubCopilot/WorkshopLab.GitHubCopilot.Core/bin",
+    "src/GitHubCopilot/WorkshopLab.GitHubCopilot.Core/obj",
+    "src/GitHubCopilot/WorkshopLab.GitHubCopilot.AppHost/bin",
+    "src/GitHubCopilot/WorkshopLab.GitHubCopilot.AppHost/obj",
+    "src/GitHubCopilot/WorkshopLab.GitHubCopilot.AGUI/bin",
+    "src/GitHubCopilot/WorkshopLab.GitHubCopilot.AGUI/obj",
+    "src/GitHubCopilot/WorkshopLab.GitHubCopilot.FoundryDeployment/bin",
+    "src/GitHubCopilot/WorkshopLab.GitHubCopilot.FoundryDeployment/obj",
     "tests/WorkshopLab.Tests/bin",
     "tests/WorkshopLab.Tests/obj"
 )

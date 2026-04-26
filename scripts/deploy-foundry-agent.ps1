@@ -1,6 +1,6 @@
 param(
     [string]$ProjectEndpoint = $env:AZURE_AI_PROJECT_ENDPOINT,
-    [string]$Manifest = "src/WorkshopLab.AgentHost/agent.yaml",
+    [string]$Manifest = "src/Foundry/WorkshopLab.AgentHost/agent.yaml",
     [string]$AgentId = $env:FOUNDRY_AGENT_ID,
     [string]$ModelDeploymentName = $env:MODEL_DEPLOYMENT_NAME
 )
@@ -15,7 +15,7 @@ if ([string]::IsNullOrWhiteSpace($ModelDeploymentName)) {
 
 $args = @(
     "run",
-    "--project", "src/WorkshopLab.FoundryDeployment/WorkshopLab.FoundryDeployment.csproj",
+    "--project", "src/Foundry/WorkshopLab.FoundryDeployment/WorkshopLab.FoundryDeployment.csproj",
     "--",
     "--project-endpoint", $ProjectEndpoint,
     "--manifest", $Manifest,

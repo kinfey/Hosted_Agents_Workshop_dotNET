@@ -10,7 +10,7 @@
 
 ## Steps
 
-1. Open `src/WorkshopLab.Core/HostedAgentAdvisor.cs`.
+1. Open `src/Foundry/WorkshopLab.Core/HostedAgentAdvisor.cs`.
 2. Review the existing tools:
    - `RecommendImplementationShape`
    - `BuildLaunchChecklist`

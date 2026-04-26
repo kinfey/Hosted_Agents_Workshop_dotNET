@@ -35,8 +35,8 @@ Primary learning flow:
 ## Code and Build Rules
 
 - Target framework is .NET 10.
-- Keep deterministic business logic in `src/WorkshopLab.Core`.
-- Keep hosted agent host behavior in `src/WorkshopLab.AgentHost`.
+- Keep deterministic business logic in `src/Foundry/WorkshopLab.Core` and `src/GitHubCopilot/WorkshopLab.GitHubCopilot.Core`.
+- Keep hosted agent host behavior in `src/Foundry/WorkshopLab.AgentHost` and `src/GitHubCopilot/WorkshopLab.GitHubCopilot.AppHost`.
 - Run tests when changing core logic:
 
 ```powershell
@@ -50,7 +50,7 @@ When UI images need refresh for docs:
 1. Start the app:
 
 ```powershell
-dotnet run --project src/WorkshopLab.ChatUI --urls http://localhost:5075
+dotnet run --project src/Foundry/WorkshopLab.ChatUI --urls http://localhost:5075
 ```
 
 2. In another terminal, run screenshot capture:

@@ -59,12 +59,12 @@ Confirm these requirements before starting:
 
 ## Step 2: Review the Agent Definition
 
-1. Open `src/WorkshopLab.AgentHost/agent.yaml` and confirm:
+1. Open `src/Foundry/WorkshopLab.AgentHost/agent.yaml` and confirm:
    - `kind: hosted`
    - `protocol: responses` at version `v1`
    - Environment variables `AZURE_AI_PROJECT_ENDPOINT` and `MODEL_DEPLOYMENT_NAME` are listed
 
-2. Open `src/WorkshopLab.AgentHost/Dockerfile` and confirm the multi-stage build uses the .NET 10 Alpine images and targets `linux/amd64`.
+2. Open `src/Foundry/WorkshopLab.AgentHost/Dockerfile` and confirm the multi-stage build uses the .NET 10 Alpine images and targets `linux/amd64`.
 
 ---
 
@@ -145,7 +145,7 @@ Before publishing to Azure, confirm the agent works in your local environment.
 2. Run the hosted agent:
 
    ```powershell
-   dotnet run --project src/WorkshopLab.AgentHost
+   dotnet run --project src/Foundry/WorkshopLab.AgentHost
    ```
 
 3. In a second terminal, send a test request:
@@ -159,7 +159,7 @@ Before publishing to Azure, confirm the agent works in your local environment.
 
    You should receive a structured recommendation from the Readiness Coach.
 
-   Alternatively, open `src/WorkshopLab.AgentHost/run-requests.http` and use the VS Code REST Client extension to send the pre-built requests.
+   Alternatively, open `src/Foundry/WorkshopLab.AgentHost/run-requests.http` and use the VS Code REST Client extension to send the pre-built requests.
 
 4. Stop the local server with **Ctrl+C**.
 
@@ -178,13 +178,13 @@ If the agent fails to start, check:
 
 Build the agent container and push it to ACR using ACR cloud build (no local daemon push required).
 
-> **Important:** The build context must be `./src` (not just `./src/WorkshopLab.AgentHost`) because the Dockerfile copies both `WorkshopLab.Core` and `WorkshopLab.AgentHost`. Use `--file` to point to the Dockerfile.
+> **Important:** The build context must be `./src/Foundry` (not just `./src/Foundry/WorkshopLab.AgentHost`) because the Dockerfile copies both `WorkshopLab.Core` and `WorkshopLab.AgentHost`. Use `--file` to point to the Dockerfile.
 
 ```powershell
 $acrName = (azd env get-values | Select-String "AZURE_CONTAINER_REGISTRY_NAME").ToString().Split("=")[1].Trim('"')
 az acr build --registry $acrName --image workshoplab-agent:lab4 --platform linux/amd64 `
-    --file ./src/WorkshopLab.AgentHost/Dockerfile `
-    ./src
+   --file ./src/Foundry/WorkshopLab.AgentHost/Dockerfile `
+   ./src/Foundry
 ```
 
 > **Note:** The first build takes 3–5 minutes as the base .NET 10 images are downloaded. Subsequent builds are faster.
@@ -195,7 +195,7 @@ When the build completes, note the full image URI shown in the output:
 <acr-name>.azurecr.io/workshoplab-agent:lab4
 ```
 
-> **Checkpoint:** The ACR build output should end with a line like `Run ID: ca1 was successful after ...`. If the build fails with a missing project reference, verify you are using `./src` as the build context — not `./src/WorkshopLab.AgentHost`. See [Known Issues — Issue 3](../../knownissues.md) for details.
+> **Checkpoint:** The ACR build output should end with a line like `Run ID: ca1 was successful after ...`. If the build fails with a missing project reference, verify you are using `./src/Foundry` as the build context — not `./src/Foundry/WorkshopLab.AgentHost`. See [Known Issues — Issue 3](../../knownissues.md) for details.
 
 ---
 
@@ -282,7 +282,7 @@ Use this validation prompt for all verification paths in this step:
 
 ### Verify via VS Code REST Client
 
-1. Open `src/WorkshopLab.AgentHost/run-requests.http`.
+1. Open `src/Foundry/WorkshopLab.AgentHost/run-requests.http`.
 2. Go to the **Production requests via Foundry Agent Service** section.
 3. Use the first request, which is prefilled with the validation prompt.
 4. If your REST client requires a token variable, acquire one first:
@@ -318,7 +318,7 @@ Validation checks:
 - the response object status is `completed`
 - the answer includes both a hosted-agent recommendation and implementation guidance
 
-You can also use the pre-built production requests in `src/WorkshopLab.AgentHost/run-requests.http`.
+You can also use the pre-built production requests in `src/Foundry/WorkshopLab.AgentHost/run-requests.http`.
 
 ---
 
@@ -340,7 +340,7 @@ The Foundry project and hosted agent definition remain unless deleted separately
 | Problem | Solution |
 |---|---|
 | Docker build errors | Ensure Docker Desktop is running: `docker info` — or skip local builds and use `az acr build` (cloud build) |
-| ACR build fails with missing project reference | Use `./src` as build context, not `./src/WorkshopLab.AgentHost`. See [Known Issues — Issue 3](../../knownissues.md) |
+| ACR build fails with missing project reference | Use `./src/Foundry` as build context, not `./src/Foundry/WorkshopLab.AgentHost`. See [Known Issues — Issue 3](../../knownissues.md) |
 | `SubscriptionNotRegistered` error | Register providers: `az provider register --namespace Microsoft.CognitiveServices` |
 | `AuthorizationFailed` during provisioning | Request Contributor role on your subscription or resource group |
 | `SkuNotSupported` during ACR provisioning | Try a different region or reuse an existing ACR. See [Known Issues — Issue 2](../../knownissues.md) |

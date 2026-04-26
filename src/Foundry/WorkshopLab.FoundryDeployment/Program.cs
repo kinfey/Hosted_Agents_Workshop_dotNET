@@ -10,7 +10,7 @@ var arguments = ParseArguments(args);
 
 string projectEndpoint = GetRequiredValue(arguments, "project-endpoint", "AZURE_AI_PROJECT_ENDPOINT");
 string agentName = GetOptionalValue(arguments, "agent-name", null) ?? Path.GetRandomFileName().Replace(".", "");
-string manifestPath = GetOptionalValue(arguments, "manifest", null);
+string? manifestPath = GetOptionalValue(arguments, "manifest", null);
 string? agentDefinitionJson = GetOptionalValue(arguments, "agent-definition", null);
 string? agentId = GetOptionalValue(arguments, "agent-id", "FOUNDRY_AGENT_ID");
 
@@ -53,7 +53,7 @@ else
 }
 
 // Parse and validate the definition
-JsonDocument docDef = JsonDocument.Parse(finalDefinitionJson);
+using JsonDocument docDef = JsonDocument.Parse(finalDefinitionJson);
 string agentKind = docDef.RootElement.TryGetProperty("kind", out JsonElement kindEl) 
     ? kindEl.GetString() ?? "unknown" 
     : "unknown";

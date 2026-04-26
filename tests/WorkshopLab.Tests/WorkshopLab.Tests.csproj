@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WorkshopLab.Core\WorkshopLab.Core.csproj" />
+    <ProjectReference Include="..\..\src\Foundry\WorkshopLab.Core\WorkshopLab.Core.csproj" />
   </ItemGroup>
 
 </Project>

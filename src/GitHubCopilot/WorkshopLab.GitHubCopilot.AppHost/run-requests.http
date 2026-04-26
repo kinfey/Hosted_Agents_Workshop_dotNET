@@ -1,0 +1,7 @@
+@host = http://localhost:8888
+
+GET {{host}}/
+
+### AG-UI endpoint is intended for AGUIChatClient clients.
+### Run the client with:
+### AGUI_SERVER_URL={{host}}/ag-ui dotnet run --project ../WorkshopLab.GitHubCopilot.AGUI

@@ -16,7 +16,7 @@ on:
     branches: [main]
     paths:
       - .github/workflows/deploy.yml
-      - src/WorkshopLab.AgentHost/**
+      - src/Foundry/WorkshopLab.AgentHost/**
       - azure.yaml
       - infra/**
 
@@ -84,8 +84,8 @@ jobs:
             --image "$IMAGE_REPOSITORY:${{ steps.image.outputs.tag }}" \
             --platform linux/amd64 \
             --source-acr-auth-id "[caller]" \
-            --file src/WorkshopLab.AgentHost/Dockerfile \
-            ./src
+            --file src/Foundry/WorkshopLab.AgentHost/Dockerfile \
+            ./src/Foundry
 
       - name: Summarize published image
         shell: bash

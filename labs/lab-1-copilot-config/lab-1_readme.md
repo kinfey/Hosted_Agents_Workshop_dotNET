@@ -26,6 +26,6 @@
    - hosted-agent protocol settings
    - local validation steps
    - deployment risks
-9. Test the configuration by asking Copilot to review `src/WorkshopLab.AgentHost/agent.yaml`.
+9. Test the configuration by asking Copilot to review `src/Foundry/WorkshopLab.AgentHost/agent.yaml`.
 
 **Expected result:** Copilot responds with Hosted Agent-aware guidance shaped by your repo instructions and skill.

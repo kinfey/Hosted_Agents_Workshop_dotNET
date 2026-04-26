@@ -12,7 +12,7 @@
 
 ## Step 1: Open the New UI Project
 
-Open `src/WorkshopLab.ChatUI` in VS Code and review:
+Open `src/Foundry/WorkshopLab.ChatUI` in VS Code and review:
 
 - `Program.cs` - app startup and service registration
 - `Components/Pages/Home.razor` - chat interface
@@ -24,7 +24,7 @@ This project is a Blazor Web App that runs locally and forwards prompts to your 
 
 ## Step 2: Configure Foundry Settings
 
-Set the Foundry endpoint and target agent name in `src/WorkshopLab.ChatUI/appsettings.Development.json`:
+Set the Foundry endpoint and target agent name in `src/Foundry/WorkshopLab.ChatUI/appsettings.Development.json`:
 
 ```json
 {
@@ -74,7 +74,7 @@ From the repository root:
 
 ```powershell
 dotnet restore
-dotnet run --project src/WorkshopLab.ChatUI
+dotnet run --project src/Foundry/WorkshopLab.ChatUI
 ```
 
 Open the URL shown by ASP.NET Core (for example, `https://localhost:7xxx`).
@@ -128,7 +128,7 @@ Use this as a quick visual check that the app renders correctly in full-screen d
 If you want to refresh all three screenshots after UI updates, run:
 
 ```powershell
-dotnet run --project src/WorkshopLab.ChatUI --urls http://localhost:5075
+dotnet run --project src/Foundry/WorkshopLab.ChatUI --urls http://localhost:5075
 ```
 
 In a second terminal:

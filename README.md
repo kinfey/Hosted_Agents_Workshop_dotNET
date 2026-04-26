@@ -147,8 +147,16 @@ For the full lab guide, see [labs/README.md](labs/README.md).
 ├── .github/workflows/         # CI and deployment-oriented workflows
 ├── labs/                      # Guided labs in sequential order
 ├── src/
-│   ├── WorkshopLab.AgentHost/ # Hosted agent entrypoint, Dockerfile, agent.yaml
-│   └── WorkshopLab.Core/      # Deterministic domain logic used by the agent tools
+│   ├── Foundry/               # Microsoft Foundry hosted-agent workshop projects
+│   │   ├── WorkshopLab.AgentHost/
+│   │   ├── WorkshopLab.ChatUI/
+│   │   ├── WorkshopLab.Core/
+│   │   └── WorkshopLab.FoundryDeployment/
+│   └── GitHubCopilot/         # GitHub Copilot + AG-UI variant projects
+│       ├── WorkshopLab.GitHubCopilot.AppHost/
+│       ├── WorkshopLab.GitHubCopilot.AGUI/
+│       ├── WorkshopLab.GitHubCopilot.Core/
+│       └── WorkshopLab.GitHubCopilot.FoundryDeployment/
 ├── tests/WorkshopLab.Tests/   # xUnit tests for the deterministic core logic
 └── WorkshopLab.sln
 ```
@@ -185,7 +193,7 @@ $env:MODEL_DEPLOYMENT_NAME = "gpt-4.1-mini"
 dotnet restore
 dotnet build
 dotnet test
-dotnet run --project src/WorkshopLab.AgentHost
+dotnet run --project src/Foundry/WorkshopLab.AgentHost
 ```
 
 Then send a local request:
@@ -258,7 +266,7 @@ The workflow does not create or start the Microsoft Foundry hosted agent. That r
 
 Use this step after the image is available in ACR.
 
-Use the helper project in [src/WorkshopLab.FoundryDeployment/Program.cs](src/WorkshopLab.FoundryDeployment/Program.cs) or the wrapper script in [scripts/deploy-foundry-agent.ps1](scripts/deploy-foundry-agent.ps1) to call the Microsoft Foundry manifest APIs explicitly.
+Use the helper project in [src/Foundry/WorkshopLab.FoundryDeployment/Program.cs](src/Foundry/WorkshopLab.FoundryDeployment/Program.cs) or the wrapper script in [scripts/deploy-foundry-agent.ps1](scripts/deploy-foundry-agent.ps1) to call the Microsoft Foundry manifest APIs explicitly.
 
 Example:
 
@@ -285,10 +293,10 @@ The helper intentionally stops after manifest create or update. Until the hosted
 This workshop separates deployment into a few clear stages so beginners can understand what happens where.
 
 - Azure prerequisites are explicit: Azure CLI auth, a Microsoft Foundry project endpoint, and a deployed chat model.
-- The hosted agent contract is explicit in [src/WorkshopLab.AgentHost/agent.yaml](src/WorkshopLab.AgentHost/agent.yaml): `kind: hosted`, `responses` protocol, and environment-variable placeholders.
+- The hosted agent contract is explicit in [src/Foundry/WorkshopLab.AgentHost/agent.yaml](src/Foundry/WorkshopLab.AgentHost/agent.yaml): `kind: hosted`, `responses` protocol, and environment-variable placeholders.
 - Azure provisioning is explicit in [azure.yaml](azure.yaml) and [infra/main.bicep](infra/main.bicep): provision the Azure resource group path and Azure Container Registry with azd.
 - CI publishing is explicit in [.github/workflows/deploy.yml](.github/workflows/deploy.yml): build a timestamped Linux AMD64 image and publish it to ACR with `az acr build`.
-- Microsoft Foundry manifest deployment is explicit in [src/WorkshopLab.FoundryDeployment/Program.cs](src/WorkshopLab.FoundryDeployment/Program.cs): create or update the hosted agent from manifest as a separate control-plane step.
+- Microsoft Foundry manifest deployment is explicit in [src/Foundry/WorkshopLab.FoundryDeployment/Program.cs](src/Foundry/WorkshopLab.FoundryDeployment/Program.cs): create or update the hosted agent from manifest as a separate control-plane step.
 - The remaining hosted-agent lifecycle operations are environment-dependent: start the container, verify status, and test the deployed agent.
 
 That matches the Microsoft Foundry deploy skill workflow for hosted agents:

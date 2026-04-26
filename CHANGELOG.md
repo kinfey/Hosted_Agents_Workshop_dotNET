@@ -4,6 +4,13 @@ All notable changes to this repository are documented in this file.
 
 The format is based on Keep a Changelog principles.
 
+## Unreleased
+
+### Changed
+
+- Moved the original Foundry workshop projects under `src/Foundry` and the GitHub Copilot AG-UI projects under `src/GitHubCopilot`.
+- Updated solution, tests, scripts, workflows, and lab documentation to use the new source layout.
+
 ## 2026-04-22 — Quality Review and Lab Hardening
 
 ### Quality Review Summary
@@ -12,7 +19,7 @@ A full lab-by-lab validation was performed from beginner and intermediate AI eng
 
 ### Fixed
 
-- **deploy.yml build context mismatch (critical):** Changed ACR cloud build context from `./src/WorkshopLab.AgentHost` to `./src` in `.github/workflows/deploy.yml`. The Dockerfile copies both `WorkshopLab.Core` and `WorkshopLab.AgentHost`, so the build context must include both projects. This was already correct in `ci.yml` and the Lab 4 docs, but the deploy workflow used the wrong context and would fail on every run.
+- **deploy.yml build context mismatch (critical):** Changed ACR cloud build context to include both `WorkshopLab.Core` and `WorkshopLab.AgentHost`. This was already correct in `ci.yml` and the Lab 4 docs, but the deploy workflow used the wrong context and would fail on every run.
 
 ### Changed
 
@@ -47,7 +54,7 @@ A full lab-by-lab validation was performed from beginner and intermediate AI eng
 ### Added
 
 - Added Lab 5 UI guide at `labs/lab-5-ui/lab-5_readme.md`.
-- Added new UI project `src/WorkshopLab.ChatUI` to the solution.
+- Added new UI project `src/Foundry/WorkshopLab.ChatUI` to the solution.
 - Added screenshot automation scripts:
   - `scripts/capture-ui-chrome.mjs`
   - `scripts/capture-ui-chrome.ps1`
@@ -67,8 +74,8 @@ A full lab-by-lab validation was performed from beginner and intermediate AI eng
 
 ### Fixed
 
-- Corrected Docker build context guidance for CI and lab instructions to use `./src` with explicit Dockerfile path.
-- Added missing Authorization header guidance for Foundry production requests in `src/WorkshopLab.AgentHost/run-requests.http`.
+- Corrected Docker build context guidance for CI and lab instructions to use the source root containing `WorkshopLab.Core` and `WorkshopLab.AgentHost` with explicit Dockerfile path.
+- Added missing Authorization header guidance for Foundry production requests in `src/Foundry/WorkshopLab.AgentHost/run-requests.http`.
 - Added explicit local `/responses` validation command to Lab 0.
 
 ### Security and Public Sharing
