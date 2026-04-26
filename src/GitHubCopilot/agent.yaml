@@ -1,0 +1,12 @@
+kind: hosted
+image: ${AGENT_IMAGE}
+cpu: "1"
+memory: 2Gi
+container_protocol_versions:
+  - protocol: ag-ui
+    version: v1
+environment_variables:
+  GITHUB_TOKEN: ${GITHUB_TOKEN}
+  GITHUB_COPILOT_MODEL: ${GITHUB_COPILOT_MODEL}
+  AGUI__EndpointPath: ${AGUI_ENDPOINT_PATH}
+  COPILOT_CLI_PATH: ${COPILOT_CLI_PATH}
